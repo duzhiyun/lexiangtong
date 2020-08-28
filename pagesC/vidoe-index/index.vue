@@ -1,0 +1,265 @@
+<template>
+		<list :pagingEnabled="true"   class="zhi_index04" :offset-accuracy="videoStyle.height" :show-scrollbar="false"  @loadmore="Jiazai" ref="list" :loadmoreoffset="loadMoreHeight" @scroll="Scroll" >
+			<cell style="position:relative;" :style="videoStyle"  v-for="(l,i) in lie" :key='i'  @disappear="Disappear($event,i)"  @appear="onappear"   >
+			   <video :style="videoStyle" v-if="index==i" @play='panduanpofang' @timeupdate="Timeupdate" :id="`video_${i}`" :ref="`video_${i}`" :loop="true" :src="l.href" controls="false" :enable-progress-gesture="false"  :show-center-play-btn="false" :objectFit="$xitong.platform=='ios'?'fill':'cover'" />
+			   <image :src="l.thumb" v-if="!l.fengmian && suo==0 " :style="videoStyle"  class="zhi_index05" mode="aspectFill"></image>   
+				<div  class="zhi_index06">  
+					<div class="zhi_xiashipin5 " v-if='so.zhuangtai==20' >
+						<image class="zhi_xiashipin6" src="https://limitao.myuan.cn/gongyong/shangchuan/tu/12/2020/02/pKQlORFbeeF38KhRfFsFSKSRfQ3AEJ.png"></image>
+						<text class="zhi_index07">{{l.city}}</text>
+						<text class="zhi_index07">距离数公里</text>
+					</div>
+					<text class="zhi_index08 "  v-if='l.huiyuan' >{{l.huiyuan.nicheng}}</text>
+					<div class="zhi_xiashipin7">
+						<text  class="zhi_index09">{{l.guanjianzi}}</text>
+						<text  class="zhi_index10">{{l.ming}}</text>
+					</div>					
+				</div>				
+				 <div class="zhi_xiashipin10" >
+					<view class="zhi_index13">
+						<view >							
+							<image   mode="aspectFill" :src="l.userinfo.avatar" class="text-center"  style="width: 90upx;height: 90upx;border-radius: 45upx;margin-top: 8px;"></image>
+						</view>
+						<image  v-if="l.guanzhu==0"  @click="guanzhu(l.guanzhu)" style="position: absolute;color: #FF0000; left: 25upx;bottom:10upx;width: 20px;height: 20px; "  src="https://limitao.myuan.cn/gongyong/shangchuan/tu/33/2020/05/GEjhN9te3FDZuaHAH3AFdEfaHJt3Ej.png"></image>
+					</view>
+					<div class="zhi_index18" @click="dianzan(l.yidianzan)" >
+						<image v-if="l.yidianzan==1" src="https://limitao.myuan.cn/gongyong/shangchuan/tu/38/2020/06/zal2uON0lr5AAQzmn06Z70A4Cy74Mu.png" class="zhi_index19" ></image>
+						<image v-else src="https://limitao.myuan.cn/gongyong/shangchuan/tu/38/2020/06/eG6VESJXIV3wSpzxYeJW1y1xJeiEAX.png" class="zhi_index19" ></image>
+						<text class="zhi_index21">{{l.yidianzanshu}}</text>
+					</div>
+					<div class="zhi_index18">
+						<image  src="https://limitao.myuan.cn/gongyong/shangchuan/tu/38/2020/06/d88Vjd4tpt4NoJAjAi74A7TLvz8dOt.png" class="zhi_index19" ></image>
+						
+						<text class="zhi_index21">200</text>
+					</div>
+					<div  class="zhi_index20" >
+						<image  src="https://limitao.myuan.cn/gongyong/shangchuan/tu/38/2020/06/P1ThsrpLLFl9Qqq7dG8g8Rr8t1HdFf.png" class="zhi_index19" ></image>
+						
+						<text class="zhi_index21">30</text>
+					</div>
+					<div class=" zhi_index23">
+						<image  class="zhi_xiashipin23 zhi_index22" src="https://limitao.myuan.cn/gongyong/shangchuan/tu/12/2020/02/YhqQ8G8f5YYNqQ5k8ob8881b5H9gMH.png" ></image>
+					</div>
+				</div>
+				<progress  v-if="index==i" :percent="bofangjindu" stroke-width="1" activeColor="#FFFFFF" backgroundColor="rgba(226, 226, 226, 0.3)" class="zhi_index24"/>
+			</cell>	
+			<div class="zhi_index00" >
+				<div :style="{height:statusBarHeight}"></div>
+				<div class="zhi_index01" >	
+					<view class="zhi_index11">
+						<image class="zhi_index12" src="https://limitao.myuan.cn/gongyong/shangchuan/tu/33/2020/06/YJ1gSNoXObmy17T1Y41SUyM4No1ynm.png" ></image>
+					</view>
+					<div class="zhi_index02" >
+						<div @click="qiehuan(1)" :class="{dibu1:so.zhuangtai==1}"  class="dibu3"  >
+							<text class="dibu" :class="{dibu1:so.zhuangtai==1}">推荐</text>
+							<div   :class="{dibu2:so.zhuangtai==1}"></div>
+						</div>
+						<div @click="qiehuan(10)" :class="{dibu1:so.zhuangtai==10}" class="dibu3" >
+							<text class="dibu"  :class="{dibu1:so.zhuangtai==10}">关注</text>
+							<div  :class="{dibu2:so.zhuangtai==10}"></div>
+						</div>
+						<div @click="qiehuan(20)" :class="{dibu1:so.zhuangtai==20}" class="dibu3" >
+							<text class="dibu"  :class="{dibu1:so.zhuangtai==20}">同城</text>
+							<div  :class="{dibu2:so.zhuangtai==20}"></div>
+						</div>
+					</div>
+				
+				</div>
+			</div>			
+		</list>	
+</template>
+<script>
+	const deviceInfo = uni.getSystemInfoSync()   
+	import canshu from '@/common/video.js'
+	import * as localConfig from '@/config/local/config'
+	const liveUrl = localConfig.liveUrl
+	
+	if(deviceInfo.brand=='Xiaomi'){
+		deviceInfo.windowHeight+=1
+	}
+	var that;	
+	export default {
+		data() {
+			return {								
+				statusBarHeight:deviceInfo.statusBarHeight+'px', 
+				loadMoreHeight: deviceInfo.windowHeight * 2, // 触发 loadmore 事件所需要的垂直偏移距离 加载到剩余2	 继续加载
+				videoStyle:{
+					width:"750rpx",
+					height:deviceInfo.windowHeight+'px',
+				},					
+				so: {
+					jingdu: '',
+					weidu: '',
+					ye:1,
+					jitiao:5,
+					zhuangtai:1,
+					id:"",
+				},
+				shuju: canshu,
+				lie:[],			
+				index:0,													
+				bofangjindu:0,
+				appear:'',
+				kebofang:1,
+				suo:0,
+			}
+		},	
+		onShow() {
+			that = this;
+			this.kebofang=1;
+			that.Jiazai()
+			if(this.lie[this.index]){
+				uni.createVideoContext(`video_${this.index}`,this).play()
+					this.$set(this.lie[this.index],'fengmian',false)  
+			}
+		},
+		onHide(){
+			that=this;
+			that.kebofang=0;
+			if(this.lie[this.index]){			
+				uni.createVideoContext(`video_${this.index}`,this).pause()
+			}			
+		},
+		methods: {
+			livelist(){
+				uni.request({
+					method:'GET',
+					url: liveUrl + '/appapi/?service=Video.getVideoList', 
+					data: {},
+					header: {
+						'Content-Type': 'application/json',
+						'token': uni.getStorageSync('token')
+					},
+					success: (res) => {
+						if(res.data.ret == '200'){
+							this.shuju = res.data.data.info
+							this.lie=this.shuju
+							if(this.lie.length>0){
+								setTimeout(()=>{
+									uni.createVideoContext(`video_${that.index}`,that).play()
+								},500)
+							}
+						}else{
+							uni.showToast({ title: res.data.errors.messag, icon: "none" });
+						}
+					},error:(res)=>{
+						console.log(JSON.stringify(res))
+					}
+				});	
+			},
+			dianzan(e){
+				if(e==0){
+					this.lie[this.index].yidianzan=1
+					
+					
+					this.lie[this.index].yidianzanshu= Number(this.lie[this.index].yidianzanshu) + 1
+				}else{
+					this.lie[this.index].yidianzan=0
+					this.lie[this.index].yidianzanshu= Number(this.lie[this.index].yidianzanshu)-1
+				}
+			},
+			guanzhu(e){
+				if(e==0){
+					this.lie[this.index].guanzhu=1
+					uni.showToast({
+					    title: '关注成功',
+					    duration: 1500
+					});
+				}else{
+					this.lie[this.index].guanzhu=0
+				}
+			},
+			
+			panduanpofang(){
+				if(that.kebofang==0){
+					uni.createVideoContext(`video_${this.index}`,this).pause()
+				}	
+			},
+			onappear (e) {
+			 this.appear=e.direction;
+			},		
+
+			Timeupdate(e){		
+				if(e.detail.currentTime>0 && !this.lie[this.index].fengmian){					
+					this.$set(this.lie[this.index],'fengmian',true)  
+				}		
+				this.bofangjindu=parseInt(e.detail.currentTime/e.detail.duration*100)			
+			},
+			Disappear(e,i){
+				this.a=0;	
+				if(that.suo==1){
+					return false;
+				}
+				if( this.appear==e.direction && deviceInfo.platform=='android'){
+					this.$set(this.lie[this.index],'fengmian',false)	
+					this.index=(e.direction=='up')?i+1:i-1;
+					setTimeout(()=>{
+							uni.createVideoContext(`video_${this.index}`,this).play()
+					},300)					
+				}		
+			},
+			Scroll(e){
+				this.a=0;
+				if(deviceInfo.platform=='ios'){				
+					var i=Math.abs(e.contentOffset.y/deviceInfo.windowHeight)					
+					if(i!=this.index){						
+						this.$set(this.lie[this.index],'fengmian',false)		
+						this.index=i
+						setTimeout(()=>{
+								uni.createVideoContext(`video_${this.index}`,this).play()
+						},300)		
+					}
+				}				
+			},
+
+			Jiazai: function(){
+				this.livelist()
+			},
+			qiehuan: function(zhuangtai) {
+				that.Jiazai();
+				this.so.zhuangtai=zhuangtai
+			},
+			
+		}
+	}
+</script>
+
+<style scoped>
+	
+	.maxTxPusher{width:750upx;background-color:#111111;position: fixed;}
+	.zhi_xiashipin10 {position: absolute;right: 15upx;bottom: 60px;width: 100upx;z-index: 99;align-items: center;justify-content: center;}
+	.neirong{position:absolute;top: 0;}
+	.zhi_xiashipin7 {width: 480upx;color: #FEFEFE;line-height: 40upx;}
+	.zhi_xiashipin5 {padding-right: 15upx;flex-direction: row;align-items: center;color: #46639B;padding-bottom: 15upx;}
+	.zhi_xiashipin6 {width: 36upx;height: 34upx;}
+	.zhi_index00{position: fixed;top: 0;left: 0; right: 0;background-image: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0));}
+	.zhi_index01{padding-top: 30upx; flex-direction: row;align-items: center;justify-content: center;}
+	.zhi_index02{flex-direction: row;width:250px;align-items: center;justify-content: space-around;}
+	.zhi_index04{width:750upx;flex: 1;background-color: #000000;}
+	.zhi_index05{position: absolute;top: 0;left: 0;}
+	.zhi_index06{position: absolute;left: 30upx;bottom: 150upx;}
+	.zhi_index07{color: #FFFFFF;font-size: 14px;padding-left: 10upx;}
+	.zhi_index08{padding-bottom:20upx;color: #FFFFFF;}
+	.zhi_index09{line-height: 50upx;color:#FF0000;font-size: 16px;font-weight: bold;}
+	.zhi_index10{line-height: 50upx;color: #FFFFFF;font-size: 15px;}
+	.zhi_index11{position:absolute ;left: 20px;top: 35upx;}
+	.zhi_index12{width: 40upx;height: 40upx;}
+	.zhi_index13{position:relative;width: 90upx;height: 140upx;}
+	.zhi_index14{width: 90upx;height: 90upx;border-radius: 45upx;margin-top: 8px;}
+	.zhi_index15{position: absolute;top: 4px;left: 7px; width: 68upx;height: 36upx;align-items: center;justify-content: center;background-color:#FF0000 ;border-radius: 30upx;}
+	.zhi_index16{position: absolute;color: #FF0000; left: 25upx;bottom:10upx;width: 20px;height: 20px;}
+	.zhi_index17{color: #FFFFFF;font-size: 22upx;}
+	.zhi_index18{width: 70upx;height: 150upx;justify-content: center;flex-direction: column;align-items: center;}
+	.zhi_index19{width: 56upx;height: 56upx;}
+	.zhi_index20{width: 70upx;height: 180upx;justify-content: center;flex-direction: column;align-items: center;}
+	.zhi_index21{color: #FFFFFF;font-size: 16px;padding-top: 4px;}
+	.zhi_index22{width: 100upx;height:100upx;}
+	.zhi_index23{padding-bottom: 46upx;}
+	.zhi_index24{position: absolute;bottom: 10px;left: 0px;width: 750upx;}
+	
+	.dibu1 {font-weight: bold;font-size: 38upx;color: #FFFFFF !important;}
+	.dibu3{position: relative;height: 30px;}
+	.dibu2{position:absolute ;width: 30px;height: 2px;background-color: #FFFFFF;bottom: 0;left: 2px;border-radius: 4upx;}
+	.dibu{color: #dcdcdc;font-size: 32upx;}
+	
+</style>
