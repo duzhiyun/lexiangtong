@@ -41,7 +41,10 @@
 					</view>
 					<view  class="libox"  @click="gotozrwvip(item.id)">
 						编缉
-					</view>				
+					</view>
+					<view  class="libox"  @click="tasktop(item.id)">
+						置顶
+					</view>	
 				</view>	
 			</view>
 			
@@ -75,6 +78,39 @@
 			}
 		},
 		methods: {
+			tasktop:function(id){
+				uni.showModal({
+					content:'确认置顶任务并扣除1点乐券？',
+					success:(res)=>{
+						if(res.confirm){
+							uni.request({
+								url: webUrl + '/api/v4/task/top',
+								data: {id:id},
+								header: {
+									'Content-Type': 'application/json',
+									'token': uni.getStorageSync('token')
+								},
+								success: (res) => {
+									if (res.data.status == 'success') {
+										uni.showToast({
+											title: '任务置顶成功',
+											duration: 2000
+										});
+									} else {
+										uni.showToast({
+											title: res.data.errors.message,
+											icon: "none",
+										});
+									}
+								},
+								error: (res) => {
+									console.log(JSON.stringify(res))
+								}
+							});
+						}
+					}
+				})
+			},
 			tasklist:function(){
 				uni.request({
 					url: webUrl + '/api/v4/task/info', 

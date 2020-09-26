@@ -154,6 +154,7 @@ export default {
 							duration: 1000,
 							icon:"none"
 						});
+						console.log(res)
 						// uni.showModal({
 						// 	content: 'server error：' + JSON.stringify(res.data),
 						// });

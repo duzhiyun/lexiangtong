@@ -84,7 +84,7 @@
 					<view class="tex"><image src="../../static/hxsimg/fiction.png" class="usimg"></image></view>
 					<view class="tex"><text class="dtbop">小说</text></view>
 				</view>	
-				<view class="tabbox" hover-class="hoverclass"  @click="gotozrwrenwuforlevel('no')">
+				<view class="tabbox" hover-class="hoverclass"  @click="gotozrwrenwuforlevel('travel')">
 					<view class="tex"><image src="../../static/hxsimg/leyou.png" class="usimg"></image></view>
 					<view class="tex"><text class="dtbop">乐惠游</text></view>
 				</view>	
@@ -416,6 +416,10 @@
 				}else if(level == 'money'){
 					uni.navigateTo({
 						url:'/pagesC/daily-tasks/money-tasks'
+					})
+				}else if(level == 'travel'){
+					uni.navigateTo({
+						url:"../../pagesC/travel/travel"
 					})
 				}else if(level == 'video'){
 					uni.reLaunch({

@@ -71,7 +71,7 @@
 					})
 				}else if(val == 'cart'){
 					uni.reLaunch({
-						url:'/pagesC/shop-index/shop-index', 
+						url:'/pages/index/index', 
 					})
 				}else if(val == 'user'){
 					uni.reLaunch({

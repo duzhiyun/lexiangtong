@@ -188,7 +188,6 @@ function getShippingFee(o){
 function getShoppingCheckout(o){
 	return new Promise((reslove, reject) => {
 		request.post(webUrl + '/api/v4/trade/orderinfo',o).then(res=>{
-			console.log(res)
 			reslove(res.data)
 		})
 	})
@@ -198,6 +197,7 @@ function getShoppingCheckout(o){
 function getCheckoutSubmit(o){
 	return new Promise((reslove, reject) => {
 		request.post(webUrl + '/api/v4/trade/done',o).then(res=>{
+			console.log(res)
 			if(res.status == 'success'){
 				if(res.data.error == 1){
 					uni.hideLoading();

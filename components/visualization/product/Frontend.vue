@@ -7,7 +7,10 @@
 					<image class="uni-product-image" :src="module.isSizeSel == '0' ? item.goods_img : item.goods_thumb" mode="widthFix"></image>
 				</view>
 				<view class="uni-product-info">
-					<view class="uni-product-title">{{item.title || item.goods_name}}</view>
+					<view class="uni-product-title">
+						{{item.title || item.goods_name}}
+						<text v-if="item.give_price" style="color:red;">【赠送{{item.give_price}}乐享值】</text>
+					</view>
 					<view class="uni-product-price">
 						<text class="uni-product-price-original">{{item.shop_price_formated}} </text>
 					</view>

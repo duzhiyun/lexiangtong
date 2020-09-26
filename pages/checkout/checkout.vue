@@ -175,6 +175,16 @@
 						<view class="value"><switch :checked="surplusSelf" @change="surplusSelfHandle" /></view>
 					</view>
 				</view>
+				<view class="uni-list-cell uni-list-cell-title" v-if="checkoutInfo.use_bean_income > 0">
+					<view class="uni-list-cell-navigate" v-if="use_beanincome_val == 0">
+						<view class="title">可使用<text class="uni-red">{{ checkoutInfo.use_bean_income }}</text>乐通账户抵扣<text class="uni-red">￥{{checkoutInfo.use_bean_income}}</text></view>
+						<view class="value"><switch :checked="beanincomeSelf" @change="beanincomeSelfHandle" /></view>
+					</view>
+					<view class="uni-list-cell-navigate" v-else>
+						<view class="title">可使用<text class="uni-red">{{ mybeanincome }}</text>乐通账户抵扣<text class="uni-red">￥{{mybeanincome}}</text></view>
+						<view class="value"><switch :checked="beanincomeSelf" @change="beanincomeSelfHandle" /></view>
+					</view>
+				</view>
 				<view class="uni-list-cell uni-list-cell-title" v-if="checkoutInfo.use_price > 0">
 					<view class="uni-list-cell-navigate" v-if="use_price_val == 0">
 						<view class="title">可使用<text class="uni-red">{{ checkoutInfo.use_price }}</text>乐券抵扣<text class="uni-red">￥{{checkoutInfo.use_price}}</text></view>
@@ -594,10 +604,13 @@
                 use_surplus_val: 0,
                 use_integral_val: 0,
 				use_price_val: 0,
+				use_beanincome_val:0,
 				price: 0,
 				myprice: 0,
+				mybeanincome:0,
 				myintegral:0,
 				aprice:0,
+				abeancome:0,
 				aintegral:0,
 				currency:'¥',
 				label_text:'应付总额：',
@@ -781,6 +794,9 @@
             },
             priceSelf(){
 				return this.use_price_val == 0 ? false : true
+            },
+            beanincomeSelf(){
+				return this.use_beanincome_val == 0 ? false : true
             },
             storeInfo() {
                 return this.checkoutInfo.store
@@ -1094,7 +1110,7 @@
 			//检查钱包是否正确
 			checkmoney(type){
 				uni.showLoading({title:"加载中"});
-				let price,integral
+				let price,integral,bean_income
 				if(this.use_price_val == 1){
 					price = this.myprice
 				}else{
@@ -1105,9 +1121,15 @@
 				}else{
 					integral = 0
 				}
+                 if(this.use_beanincome_val == 1){
+					bean_income = this.mybeanincome
+				}else{
+					bean_income = 0
+				}
 				let o = {
 					price:price,
-					pay_points:integral
+					pay_points:integral,
+					bean_income:bean_income
 				}
 				uni.request({
 					url: webUrl + '/api/v4/trade/changemoney',  
@@ -1130,6 +1152,9 @@
 							}
 							else if(type == 3){
 								this.use_integral_val = 0;
+							}
+							else if(type == 4){
+								this.use_beanincome_val = 0;
 							}
 							uni.hideLoading();
 						}
@@ -1181,6 +1206,64 @@
 				   })
 			   },1000)
 			},
+			//是否使用乐通账户
+			beanincomeSelfHandle(e) {
+				this.use_beanincome_val = e.detail.value == true ? 1 : 0
+				if(this.use_beanincome_val == 1){
+					this.mybeanincome = this.checkoutInfo.use_bean_income;
+				}
+                if(this.use_beanincome_val == 1 && this.total.amount == 0){
+					uni.showToast({
+						title:'您已选择了其他积分来购买该产品',
+						icon:'none'
+					})
+					this.use_beanincome_val = 0
+				}
+				else if(this.use_beanincome_val == 0 && this.abeanincome == 0){
+					
+				}
+				else if(this.use_beanincome_val == 0 && this.abeanincome == 1){
+					this.total.amount = Number(this.total.amount) + Number(this.mybeanincome)
+					let data = {
+						amount:this.total.amount,
+						amount_formated:'¥'+this.total.amount
+					};
+					this.$store.dispatch('setCheckoutTotal', data)
+					this.abeanincome = 0
+				}
+				else if(this.total.amount > this.mybeanincome){
+					this.total.amount = Number(this.total.amount) - Number(this.mybeanincome)
+					let data = {
+						amount:this.total.amount,
+						amount_formated:'¥'+this.total.amount
+					};
+					this.$store.dispatch('setCheckoutTotal', data)
+					this.abeanincome = 1
+				}
+				else if(this.total.amount < this.mybeanincome){
+					this.mybeanincome = Number(this.total.amount)
+					this.total.amount = 0
+					let data = {
+						amount:this.total.amount,
+						amount_formated:'¥'+this.total.amount
+					};
+					this.$store.dispatch('setCheckoutTotal', data)
+					this.abeanincome = 1
+				}
+				else{
+					this.total.amount = 0
+					this.mybeanincome = this.checkoutInfo.use_bean_income
+					let data = {
+						amount:this.total.amount,
+						amount_formated:'¥'+this.total.amount
+					};
+					this.$store.dispatch('setCheckoutTotal', data)
+					this.abeanincome = 1
+				}
+				if(this.use_beanincome_val == 1){
+					this.checkmoney(4);
+				}
+            },
 			//是否使用乐券
 			priceSelfHandle(e) {
 				this.use_price_val = e.detail.value == true ? 1 : 0
@@ -1403,8 +1486,10 @@
 					surplus: this.surpluss,													//使用余额值
 					use_integral: this.use_integral_val,					    //是否使用积分
 					integral: this.myintegral,									//本单可使用积分
-					use_price: this.use_price_val,					            //是否乐券
-					price: this.myprice,									//本单可使用乐券
+					use_price: this.use_price_val,					            //是否使用乐券
+					price: this.myprice,									    //本单可使用乐券
+					use_bean_income: this.use_beanincome_val,				    //是否使用乐通账户
+					bean_income: this.mybeanincome,							    //本单可使用乐通账户
 					bonus_id: this.bonusObject.bonusId,							//红包id
 					bonus: this.bonusObject.bonusMoney,							//红包金额
 					bonus_sn: this.bonusObject.bonusSn, 						//红包编号

@@ -6,6 +6,7 @@
 			    <view class="fabu-team"><text>{{item.name}}</text></view>
 				 <view class="fabu-team"><text>赚：{{item.price}}乐券</text></view>
 				 <view class="fabu-team"><text>赚：{{item.dot}}任务点</text></view>
+				 <view class="fabu-team"><text>押：{{item.cash_pledge}}乐券</text></view>
 			</view>
 			<view class="fabu-nav" style="border-top:1px solid #515151;margin-top:40rpx;border-bottom:1px solid #515151;"> 
 				<view class="fabu-imgteam"><text>{{item.apply_num}}人已赚 </text></view>
@@ -341,7 +342,7 @@ page,body{background:#000000}
 	color:#8c5e1e;
 	flex-wrap:wrap;
 	}
-.fabu-team{font-size:28rpx;width:27%;margin:10rpx 2%;border-radius: 50rpx;border:1rpx solid #8c5e1e;text-align:center;}
+.fabu-team{font-size:20rpx;width:20%;margin:10rpx 2%;border-radius: 50rpx;border:1rpx solid #cacaca;text-align:center;}
 .fabu-imgteam{font-size:28rpx; width:25%;margin:10rpx 10rpx; text-align:left;padding-left:30rpx}
 
 .fabu-header{margin-top:-100rpx;display: flex;flex-direction: row;justify-content: center;overflow: hidden;

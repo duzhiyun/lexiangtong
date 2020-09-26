@@ -126,6 +126,7 @@
 						</view>
 					</view>
 				</view>
+
 				<view class="list-ul" style=" padding-left:0">
 					<view class="list-name" style="width:200rpx;padding-left:0"> 任务个数：</view>
 					<view class="list-inp">
@@ -135,6 +136,19 @@
 					</view>
 				</view>
 			</view>
+
+			<view style="margin-left: 27rpx;font-size: 25rpx; margin-top: 30rpx;">
+				是否交押金:
+				<u-radio-group v-model="valueRadio" @change="radioGroupChange" style="margin-left: 30rpx;">
+					<u-radio shape="circle" @change="radioChange" v-for="(item, index) in  listRadio" :key="index" :name="item.name" :disabled="item.disabled">
+						{{item.name}}
+					</u-radio>
+					<input type="number" v-model="cash_pledge" v-show="radioInput" style="border: 1px solid rgb(200, 201, 204); border-radius: 30rpx;padding: 5rpx;width: 250rpx;" />
+				</u-radio-group>
+			</view>
+
+
+
 
 			<view class="list-ul">
 				<view class="list-name"> 支付总额：</view>
@@ -198,6 +212,19 @@
 	export default {
 		data() {
 			return {
+				cash_pledge: 0,
+				radioInput: false,
+				listRadio: [{
+						name: '是',
+						disabled: false
+					},
+					{
+						name: '否',
+						disabled: false
+					},
+				],
+				// u-radio-group的v-model绑定的值如果设置为某个radio的name，就会被默认选中
+				valueRadio: '否',
 				value: '',
 				border: true,
 				tab: 'a',
@@ -222,19 +249,31 @@
 				resource: 1,
 				count: 5,
 				link: '',
-				detail: ['','','','','','','','','',''],
+				detail: ['', '', '', '', '', '', '', '', '', ''],
 				end_date: '请选择过期时间',
-				image: ['','','','','','','','','',''],
-				taskimage:'../../static/hxsimg/errorImage.jpg',
+				image: ['', '', '', '', '', '', '', '', '', ''],
+				taskimage: '../../static/hxsimg/errorImage.jpg',
 				showb: false,
 				showc: false,
 				list: [],
-				amount:2.5,
-				tax:0.5
+				amount: 2.5,
+				tax: 0.5
 			}
 		},
 		methods: {
-			countamount(){
+			// 选中某个单选框时，由radio时触发
+			radioChange(e) {
+				if (e == '是') {
+					this.radioInput = true
+				} else {
+					this.radioInput = false
+				}
+			},
+			// 选中任一radio时，由radio-group触发
+			radioGroupChange(e) {
+				// console.log(e);
+			},
+			countamount() {
 				this.amount = this.price * this.count
 				this.tax = this.amount * 0.2
 			},
@@ -332,7 +371,7 @@
 					}
 				})
 			},
-			chooseImage: function(val,index) {
+			chooseImage: function(val, index) {
 				uni.chooseImage({
 					count: 1,
 					sizeType: ['original', 'compressed'],
@@ -346,7 +385,7 @@
 								type: val
 							}).then(data => {
 								if (data.status == 'success') {
-									this.$set(this.image,index,data.data[0])
+									this.$set(this.image, index, data.data[0])
 								}
 							})
 						}).catch(error => {
@@ -372,12 +411,18 @@
 					return false;
 				}
 
-				if(Number(this.count)<1){
+				if (Number(this.count) < 1) {
 					uni.showToast({
-						title:'任务个数不能低于1个',
-						icon:'none'
+						title: '任务个数不能低于1个',
+						icon: 'none'
 					})
 					return false;
+				}
+				let cash_pledge
+				if(this.radioInput == true){
+					cash_pledge = this.cash_pledge
+				}else{
+					cash_pledge = 0
 				}
 				let o = {
 					title: this.title,
@@ -392,7 +437,8 @@
 					detail: this.detail,
 					image: this.image,
 					type: this.tindex,
-					tushi:this.taskimage
+					tushi: this.taskimage,
+					cash_pledge:cash_pledge
 				}
 				uni.request({
 					url: webUrl + '/api/v4/task/send',
@@ -489,10 +535,12 @@
 		text-align: left;
 		padding-left: 30rpx
 	}
-	.inputs{
-		margin-top:20px;
+
+	.inputs {
+		margin-top: 20px;
 		margin-bottom: 10px;
 	}
+
 	.fabu-header {
 		margin-top: -100rpx;
 		display: flex;
