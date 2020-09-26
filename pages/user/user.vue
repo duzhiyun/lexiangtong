@@ -49,9 +49,9 @@
 		<!--以上头部--> 		 
 		<view class="taoke">   	
 			
-	 		<view class="bannertwo"   @click="$outerHref('../../pagesC/money/poing-bean/poing-bean?money='+point,$isLogin())">
+	 		<!-- <view class="bannertwo"   @click="$outerHref('../../pagesC/money/poing-bean/poing-bean?money='+point,$isLogin())">
 				<image :src="bannimge" class="img100"></image>
-			</view> 
+			</view> -->
 			
 			<view class="tab liti obg">
 				<view class="tabbox" hover-class="hoverclass"  @click="gotozrwrenwuforlevel('zrw')">

@@ -20,7 +20,7 @@
 		<view class="preferentialPrice">
 			<view class="Price">
 				<view class="Price2">
-					金色远方价格:<text class="PriceText">￥{{price}}</text>
+					平台价格:<text class="PriceText">￥{{price}}</text>
 				</view>
 				<view class="Price2">
 					成人市场价:<text class="PriceText">￥{{market_price}}</text><text style="font-size: 23rpx;">起</text>
@@ -325,17 +325,16 @@
 
 	.preferentialPrice {
 		margin: 20rpx;
-		height: 250rpx;
+		min-height: 250rpx;
 		background-color: rgb(255, 255, 255);
 		border-radius: 15rpx;
 
 		.Price {
-			padding: 20rpx;
+			padding:0 20rpx;
 			font-size: 25rpx;
 			display: flex;
 			justify-content: space-between;
-			height: 20rpx;
-
+            padding-top:20rpx;
 			.Price2 {
 				.PriceText {
 					font-size: 35rpx;
@@ -349,10 +348,10 @@
 	.agePrice {
 		padding: 20rpx;
 		display: flex;
-
 		.agepriceImage {
 			width: 30rpx;
-			height: 30rpx;
+			height:30rpx;
+			margin:5rpx 0;
 		}
 
 		.age {
@@ -364,7 +363,6 @@
 	.discountsReel {
 		padding: 20rpx;
 		margin-top: 40rpx;
-		height: 100rpx;
 		border-top: 1px solid rgb(218, 218, 218);
 		font-size: 30rpx;
 		font-weight: 700;
