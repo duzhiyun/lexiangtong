@@ -1648,7 +1648,7 @@
 					"style": {
 						"navigationBarTitleText": "豆豆任务",
 						"backgroundColorTop": "#000000",
-						"navigationBarTextStyle": "#ffffff",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000"
 
@@ -1659,7 +1659,7 @@
 					"style": {
 						"navigationBarTitleText": "存券生息",
 						"backgroundColorTop": "#000000",
-						"navigationBarTextStyle": "#ffffff",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000",
 						"app-plus": {
@@ -1690,7 +1690,7 @@
 					"style": {
 						"navigationBarTitleText": "乐豆",
 						"backgroundColorTop": "#e7cd36",
-						"navigationBarTextStyle": "#e7cd36",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000",
 						"app-plus": {
@@ -1755,7 +1755,7 @@
 					"style": {
 						"navigationBarTitleText": "交易中心",
 						"backgroundColorTop": "#000000",
-						"navigationBarTextStyle": "#ffffff",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000"
 					}
@@ -1764,7 +1764,7 @@
 					"style": {
 						"navigationBarTitleText": "卖出",
 						"backgroundColorTop": "#000000",
-						"navigationBarTextStyle": "#ffffff",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000"
 					}
@@ -1773,7 +1773,7 @@
 					"style": {
 						"navigationBarTitleText": "买入",
 						"backgroundColorTop": "#000000",
-						"navigationBarTextStyle": "#ffffff",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000"
 					}
@@ -1782,7 +1782,7 @@
 					"style": {
 						"navigationBarTitleText": "卖单信息",
 						"backgroundColorTop": "#000000",
-						"navigationBarTextStyle": "#ffffff",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000"
 					}
@@ -1791,7 +1791,7 @@
 					"style": {
 						"navigationBarTitleText": "我的买入",
 						"backgroundColorTop": "#000000",
-						"navigationBarTextStyle": "#ffffff",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000"
 					}
@@ -1800,7 +1800,7 @@
 					"style": {
 						"navigationBarTitleText": "我的卖出",
 						"backgroundColorTop": "#000000",
-						"navigationBarTextStyle": "#ffffff",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000"
 					}
@@ -1809,7 +1809,7 @@
 					"path": "jiaoyi/jiaoyimysell/selling",
 					"style": {
 						"backgroundColorTop": "#000000",
-						"navigationBarTextStyle": "#ffffff",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000"
 					}
@@ -1910,7 +1910,7 @@
 					"style": {
 						"navigationBarTitleText": "创始合伙人",
 						"backgroundColorTop": "#000000",
-						"navigationBarTextStyle": "#e7cd36",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#000000",
 						"backgroundColor": "#000000"
 					}
@@ -1977,7 +1977,7 @@
 		}
 	},
 	"globalStyle": {
-		"navigationBarTextStyle": "#eb9414",
+		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "乐享通",
 		"navigationBarBackgroundColor": "#000000",
 		"backgroundColor": "#000000"
